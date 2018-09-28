@@ -102,8 +102,6 @@ app.patch('/todos/:id', (request, response) => {
     new: true
   };
 
-  Todo.findOneAndUpdate()
-
   Todo.findOneAndUpdate(id, updateOperation, options).then((todo)=>{
     if (!todo) {
       return response.status(404).send();

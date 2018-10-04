@@ -8,6 +8,7 @@ const {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
+var {authenticate} = require('./middleware/authenticate');
 
 
 var app = express();
@@ -128,8 +129,15 @@ app.post('/users', (request, response) => {
     return user.generateAuthToken();
   }).then((token) => {
     console.log(user);
-    response.header('x-auth',token).status(200).send(user);
+    response.header('x-auth',token).status(201).send(user);
   }).catch((e)=> response.status(400).send(e));
+
+});
+
+
+// get about user
+app.get('/users/me', authenticate, (request, response) => {
+  response.status(200).send(request.user);
 
 });
 
